@@ -119,7 +119,146 @@ app.delete('/users/:id',async(req, res)=>{
 }
 })
 
+app.get('/categories', async(req, res)=>{
+  try {
+      const categories=await Category.findAll()
+      res.status(200).json(categories)
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
 
+app.get('/categories/:id', async(req, res)=>{
+  try {
+    const categories= await Category.findByPk(req.params.id)
+    if(categories){
+      res.status(200).json(categories)
+    }else{
+      res.status(404).json({message: 'category doesnt exist'})
+    }
+    res.status(200).json(categories)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+
+app.post('/categories', async(req, res)=>{
+  try {
+      //console.log(req.body)
+      await Category.create(req.body)
+      res.status(201).json({message: 'category created'})
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
+
+app.put('/categories/:id',async (req, res)=>{
+  try {
+    const categories= await Category.findByPk(req.params.id)
+    if(categories){
+      categories.id=req.body.id
+      categories.name=req.body.name
+      await categories.save()
+      res.status(202).json({message: "accepted"})
+    }else{
+      res.status(404).json({message: 'category doesnt exist'})
+    }
+    res.status(200).json(categories)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.delete('/categories/:id',async(req, res)=>{
+  try {
+    const categories= await Category.findByPk(req.params.id)
+    if(categories){
+      await categories.destroy()
+      res.status(202).json({message:'deleted'})
+    }else{
+      res.status(404).json({message: 'category doesnt exist'})
+    }
+    res.status(200).json(categories)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.get('/food', async(req, res)=>{
+  try {
+      const food=await Food.findAll()
+      res.status(200).json(food)
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
+
+app.get('/food/:id', async(req, res)=>{
+  try {
+    const food= await Food.findByPk(req.params.id)
+    if(food){
+      res.status(200).json(food)
+    }else{
+      res.status(404).json({message: 'food doesnt exist'})
+    }
+    res.status(200).json(food)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.post('/food', async(req, res)=>{
+  try {
+      //console.log(req.body)
+      await Food.create(req.body)
+      res.status(201).json({message: 'food created'})
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
+
+app.put('/food/:id',async (req, res)=>{
+  try {
+    const food= await Food.findByPk(req.params.id)
+    if(food){
+      food.id=req.body.id
+      food.name=req.body.name
+      await food.save()
+      res.status(202).json({message: "accepted"})
+    }else{
+      res.status(404).json({message: 'food doesnt exist'})
+    }
+    res.status(200).json(food)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.delete('/food/:id',async(req, res)=>{
+  try {
+    const food= await Food.findByPk(req.params.id)
+    if(food){
+      await food.destroy()
+      res.status(202).json({message:'deleted'})
+    }else{
+      res.status(404).json({message: 'food doesnt exist'})
+    }
+    res.status(200).json(food)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
