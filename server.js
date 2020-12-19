@@ -73,7 +73,7 @@ app.get('/users/:id', async(req, res)=>{
 
 app.post('/users', async(req, res)=>{
   try {
-      //console.log(req.body)
+      
       await User.create(req.body)
       res.status(201).json({message: 'user created'})
   } catch (err) {
@@ -113,6 +113,78 @@ app.delete('/users/:id',async(req, res)=>{
       res.status(404).json({message: 'user doesnt exist'})
     }
     res.status(200).json(users)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+
+app.get('/products', async(req, res)=>{
+  try {
+      const product=await Products.findAll()
+      res.status(200).json(product)
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
+
+app.get('/product/:id', async(req, res)=>{
+  try {
+    const product= await Products.findByPk(req.params.id)
+    if(product){
+      res.status(200).json(product)
+    }else{
+      res.status(404).json({message: 'product doesnt exist'})
+    }
+    res.status(200).json(product)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.post('/product', async(req, res)=>{
+  try {
+      
+      await Products.create(req.body)
+      res.status(201).json({message: 'product added'})
+  } catch (err) {
+      console.warn(err)
+      res.status(500).json({message: 'server error'})
+  }
+})
+
+
+app.put('/product/:id',async (req, res)=>{
+  try {
+    const product= await Products.findByPk(req.params.id)
+    if(product){
+      product.quantity=req.body.quantity
+      product.measurementUnit=req.body.measurementUnit
+      await product.save()
+      res.status(202).json({message: "accepted"})
+    }else{
+      res.status(404).json({message: 'product doesnt exist'})
+    }
+    res.status(200).json(product)
+} catch (err) {
+    console.warn(err)
+    res.status(500).json({message: 'server error'})
+}
+})
+
+app.delete('/product/:id',async(req, res)=>{
+  try {
+    const product= await Products.findByPk(req.params.id)
+    if(product){
+      await product.destroy()
+      res.status(202).json({message:'deleted'})
+    }else{
+      res.status(404).json({message: 'product doesnt exist'})
+    }
+    res.status(200).json(product)
 } catch (err) {
     console.warn(err)
     res.status(500).json({message: 'server error'})
