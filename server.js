@@ -221,6 +221,37 @@ app.get("/food/:id", async (req, res) => {
   }
 });
 
+app.post("/users", async (req, res) => {
+  try {
+    await User.create(req.body);
+    res.status(201).json({ message: "user created" });
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.put("/users/:id", async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.id);
+    if (user) {
+      user.id = req.body.id;
+      user.firstName = req.body.firstName;
+      user.lastname = req.body.lastname;
+      user.email = req.body.email;
+      user.userType = req.body.userType;
+      await user.save();
+      res.status(202).json({ message: "accepted" });
+    } else {
+      res.status(404).json({ message: "user doesnt exist" });
+    }
+    res.status(200).json(food);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
 app.get("/groups/:id", async (req, res) => {
   try {
     const Group = await Group.findByPk(req.params.id);
@@ -321,6 +352,74 @@ app.delete("/groups/:id", async (req, res) => {
       res.status(404).json({ message: "group doesnt exist" });
     }
     res.status(200).json(group);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+app.get("/products", async (req, res) => {
+  try {
+    const product = await Products.findAll();
+    res.status(200).json(product);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.get("/product/:id", async (req, res) => {
+  try {
+    const product = await Products.findByPk(req.params.id);
+    if (product) {
+      res.status(200).json(product);
+    } else {
+      res.status(404).json({ message: "product doesnt exist" });
+    }
+    res.status(200).json(product);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.post("/product", async (req, res) => {
+  try {
+    await Products.create(req.body);
+    res.status(201).json({ message: "product added" });
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.put("/product/:id", async (req, res) => {
+  try {
+    const product = await Products.findByPk(req.params.id);
+    if (product) {
+      product.quantity = req.body.quantity;
+      product.measurementUnit = req.body.measurementUnit;
+      await product.save();
+      res.status(202).json({ message: "accepted" });
+    } else {
+      res.status(404).json({ message: "product doesnt exist" });
+    }
+    res.status(200).json(product);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.delete("/product/:id", async (req, res) => {
+  try {
+    const product = await Products.findByPk(req.params.id);
+    if (product) {
+      await product.destroy();
+      res.status(202).json({ message: "deleted" });
+    } else {
+      res.status(404).json({ message: "product doesnt exist" });
+    }
+    res.status(200).json(product);
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });
