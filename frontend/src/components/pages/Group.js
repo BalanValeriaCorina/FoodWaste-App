@@ -10,7 +10,7 @@ export default function Group() {
   const setRoute = useSetRecoilState(route);
   setRoute("groups");
 
-  useEffect(() => {
+  function getGroups() {
     Axios.get("http://localhost:8080/groups")
       .then((res) => {
         let data = [];
@@ -23,6 +23,10 @@ export default function Group() {
         setData(data);
       })
       .catch((err) => console.error(err));
+  }
+
+  useEffect(() => {
+    getGroups();
 
     let groupbutton = document.getElementById("groupbutton");
     groupbutton.addEventListener("click", () => {
@@ -33,10 +37,33 @@ export default function Group() {
       })
         .then((res) => {
           console.log(res);
+          getGroups();
         })
         .catch((err) => {
           console.error(err);
         });
+    });
+
+    let groupUpdateButton = document.getElementById("groupbutton-update");
+    groupUpdateButton.addEventListener("click", () => {
+      let groupId = document.getElementById("groupid");
+      let groupName = document.getElementById("groupname");
+
+      if (groupId.value) {
+        // Start the update process
+
+        // 1. Get the original value
+        Axios.get("http://localhost:8080/groups/" + groupId.value)
+          .then((res) => {
+            // 2. Update with new values if given
+            Axios.put("http://localhost:8080/groups/" + groupId.value, {
+              name: groupName.value,
+            })
+              .then(() => getGroups())
+              .catch((err) => console.error(err));
+          })
+          .catch((err) => console.error(err));
+      }
     });
   }, [setData]);
 

@@ -252,13 +252,12 @@ app.put("/users/:id", async (req, res) => {
 
 app.get("/groups/:id", async (req, res) => {
   try {
-    const Group = await Group.findByPk(req.params.id);
-    if (Group) {
-      res.status(200).json(Group);
+    const group = await Group.findByPk(req.params.id);
+    if (group) {
+      res.status(200).json(group);
     } else {
       res.status(404).json({ message: "group doesnt exist" });
     }
-    res.status(200).json(groups);
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });
@@ -308,16 +307,15 @@ app.put("/food/:id", async (req, res) => {
 app.put("/groups/:id", async (req, res) => {
   try {
     const group = await Group.findByPk(req.params.id);
-    if (Group) {
-      Group.id = req.body.id;
-      Group.name = req.body.name;
-      Group.numberOfMembers = req.body.numberOfMembers;
-      await Group.save();
+    if (group) {
+      group.id = req.body.id;
+      group.name = req.body.name;
+      group.numberOfMembers = req.body.numberOfMembers;
+      await group.save();
       res.status(202).json({ message: "accepted" });
     } else {
       res.status(404).json({ message: "group doesnt exist" });
     }
-    res.status(200).json(groups);
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });

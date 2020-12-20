@@ -45,6 +45,7 @@ export default function User() {
       })
         .then((res) => {
           console.log(res);
+          getUsers();
         })
         .catch((err) => {
           console.error(err);

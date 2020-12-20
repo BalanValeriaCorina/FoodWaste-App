@@ -48,6 +48,7 @@ export default function Food() {
       })
         .then((res) => {
           console.log(res);
+          getFood();
         })
         .catch((err) => {
           console.error(err);

@@ -37,6 +37,7 @@ export default function Category() {
       })
         .then((res) => {
           console.log(res);
+          getCategories();
         })
         .catch((err) => {
           console.error(err);
