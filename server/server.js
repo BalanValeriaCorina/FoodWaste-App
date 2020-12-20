@@ -5,35 +5,33 @@ const Group = require("./models/Group").Group;
 const Products = require("./models/Products").Products;
 const Category = require("./models/Category").Category;
 const bodyParser = require("body-parser");
-
-//defining the mane to many relationship betweeen the User and the Food entities
-User.belongsToMany(Food, { through: "FoodPreferences", timestamps: false });
-Food.belongsToMany(User, { through: "FoodPreferences", timestamps: false });
-User.belongsToMany(User, {
-  as: "friend",
-  through: "Friends",
-  timestamps: false,
-});
-Group.belongsToMany(User, { through: "UserGroups", timestamps: false });
-User.belongsToMany(Group, { through: "UserGroups", timestamps: false });
-User.belongsToMany(Food, { through: "Allergies", timestamps: false });
-Food.belongsToMany(User, { through: "Allergies", timestamps: false });
-
-sequelize.sync({ force: false }).then(() => {
-  console.log("tables created");
-});
+const cors = require("cors");
 
 const express = require("express");
 
 const app = express();
-const port = 3000;
+const port = 8080;
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 app.get("/create", async (req, res) => {
+  //defining the mane to many relationship betweeen the User and the Food entities
+  User.belongsToMany(Food, { through: "FoodPreferences", timestamps: false });
+  Food.belongsToMany(User, { through: "FoodPreferences", timestamps: false });
+  User.belongsToMany(User, {
+    as: "friend",
+    through: "Friends",
+    timestamps: false,
+  });
+  Group.belongsToMany(User, { through: "UserGroups", timestamps: false });
+  User.belongsToMany(Group, { through: "UserGroups", timestamps: false });
+  User.belongsToMany(Food, { through: "Allergies", timestamps: false });
+  Food.belongsToMany(User, { through: "Allergies", timestamps: false });
+
   try {
     await sequelize.sync({ force: true });
     res.status(201).json({ message: "created" });
@@ -70,7 +68,7 @@ app.get("/users/:id", async (req, res) => {
 
 app.post("/users", async (req, res) => {
   try {
-    //console.log(req.body)
+    console.log(req.body);
     await User.create(req.body);
     res.status(201).json({ message: "user created" });
   } catch (err) {
@@ -281,7 +279,7 @@ app.post("/food", async (req, res) => {
 app.post("/groups", async (req, res) => {
   try {
     //console.log(req.body)
-    await groups.create(req.body);
+    await Group.create({ name: req.body.name, numberOfMembers: 0 });
     res.status(201).json({ message: "group created" });
   } catch (err) {
     console.warn(err);
@@ -344,7 +342,7 @@ app.delete("/food/:id", async (req, res) => {
 
 app.delete("/groups/:id", async (req, res) => {
   try {
-    const group = await group.findByPk(req.params.id);
+    const group = await Group.findByPk(req.params.id);
     if (group) {
       await group.destroy();
       res.status(202).json({ message: "deleted" });
