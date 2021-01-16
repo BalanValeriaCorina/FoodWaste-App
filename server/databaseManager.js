@@ -3,8 +3,8 @@ require("dotenv").config();
 
 const sequelize = new Sequelize(
   "FoodWaste_db",
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
+  "process.env.DB_USERNAME",
+  "process.env.DB_PASSWORD",
   {
     //create the connection to our database
     host: "localhost",

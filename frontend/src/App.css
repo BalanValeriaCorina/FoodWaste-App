@@ -1,0 +1,69 @@
+.header{
+    border:3px solid black;
+    background-image: url(./components/homeimage.jpg);
+    height: 300px;
+    
+}
+
+.header-title{
+    font-size: 70px;
+    position: relative;
+    margin: auto;
+    width: 50%;
+    margin-left: 45%;
+    
+}
+
+.header-text{
+    margin-left:45%;
+    font-size: 40px;
+}
+
+.row{
+    border:3px solid black;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: 320px;
+   
+
+}
+
+.column{
+    display: flex;
+    flex-direction: column;
+    /* flex-basis: 100%; */
+    flex: 1;
+}
+
+
+
+#company{
+    margin-left: 50px;
+    width: 20%;
+    margin-top: 10px;
+    height: 75%;
+}
+
+#goal{
+    margin-left: 50px;
+    margin-top: 50px;
+    width: 30%;
+    
+}
+
+.info{
+    /* width: 70%; */
+    font-size: 50px;
+    /* margin-left: 30px; */
+    float: left;
+    
+}
+
+h1{
+    float: left;
+}
+
+.container{
+    margin-top: 50px;
+}

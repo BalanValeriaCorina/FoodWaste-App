@@ -1,12 +1,12 @@
 import "./App.css";
-import Layout from "./components/Layout";
+import Home from "./components/Home";
 import { RecoilRoot } from "recoil";
 
 function App() {
   return (
     <div>
       <RecoilRoot>
-        <Layout></Layout>
+        <Home></Home>
       </RecoilRoot>
     </div>
   );
