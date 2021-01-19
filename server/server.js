@@ -33,7 +33,7 @@ app.get("/create", async (req, res) => {
   Food.belongsToMany(User, { through: "Allergies", timestamps: false });
 
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     res.status(201).json({ message: "created" });
   } catch (err) {
     console.warn(err);
@@ -60,6 +60,27 @@ app.get("/users/:id", async (req, res) => {
       res.status(404).json({ message: "user doesnt exist" });
     }
     res.status(200).json(users);
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+app.get("/users/email/:email", async (req, res) => {
+  try {
+    const users = await User.findAll({order: sequelize.fn('min', sequelize.col('id'))});
+    let user = undefined;
+    users.forEach((u) => {
+      if (u.email == req.params.email) {
+        user = u;
+        return;
+      }
+    });
+    if (user == undefined) {
+      res.status(404).json({ message: "user not found" });
+    } else {
+      res.status(200).json(user);
+    }
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });

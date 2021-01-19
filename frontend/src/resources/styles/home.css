@@ -1,0 +1,54 @@
+.jumbotron-fluid {
+    background-image: url("../images/home_image.webp");
+    background-size: cover;
+    background-position: center;   
+}
+
+.jumbotron-fluid h1, .jumbotron-fluid p {
+    color: white;
+    text-shadow: .1em .1em .1em black;
+}
+
+.jumbotron-fluid h1 {
+    font-size: 3rem;
+}
+
+.jumbotron-fluid p {
+    font-size: 1.5rem;
+}
+
+.presentation-section {
+    width: 100%;
+}
+
+.presentation-section {
+    height: 40vh;
+}
+
+.presentation-section p {
+    font-weight: 700;
+    font-size: 1rem;
+    align-content: center;
+}
+
+.presentation-section img {
+    width: 150px;
+}
+
+@media only screen and (min-width: 768px) {
+    .jumbotron-fluid h1 {
+        font-size: 6rem;
+    }
+    
+    .jumbotron-fluid p {
+        font-size: 2.2rem;
+    }
+
+    .presentation-section p {
+        font-size: 1.5rem;
+    }
+
+    .presentation-section img {
+        width: 300px;
+    }
+}

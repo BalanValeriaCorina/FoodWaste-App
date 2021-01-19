@@ -10,4 +10,9 @@ const route = atom({
   default: "",
 });
 
-export { listData, route };
+const user = atom({
+  key: "userState",
+  default: undefined
+})
+
+export { listData, route, user };

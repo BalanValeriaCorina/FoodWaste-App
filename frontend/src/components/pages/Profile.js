@@ -1,36 +1,25 @@
-import React from 'react';
-
-
-
-
+import React, { useEffect } from 'react';
+import "../../resources/styles/profile.css";
+import avatar from "../../resources/images/avatar.svg";
+import { useRecoilValue } from 'recoil';
+import { user } from '../../StateManager';
+import { useHistory } from 'react-router-dom';
 
 export default function Profile() {
+  const currentUser = useRecoilValue(user);
+  const history = useHistory();
+
+  if(currentUser == undefined) {
+    history.push("/");
+  }
 
   return(
-    <main>
-      <div>
-    <h1>Welcome back!</h1>
+    <div className="wrapper">
+      <section className="container-fluid d-flex flex-column align-items-center">
+        <img src={avatar} width="100px" height="100px"></img>
+        <h2>Welcome back, {currentUser!=undefined?currentUser.firstName:""}</h2>
+      </section>
     </div>
-    <br/>
-    <br/>
-    <br/>
-
-    <div>
-     
-    <h3>My products</h3>
-    <button  type="button" className="btn btn-primary" >
-            Add
-    </button>
-    <button  type="button" className="btn btn-primary" >
-            Remove
-    </button>
-    </div>
-    <br/>
-    <br/>
-    <br/>
-    <h3>Friends</h3>
-    </main>
-
   )
 
 }
