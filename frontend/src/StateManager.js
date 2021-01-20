@@ -12,7 +12,17 @@ const route = atom({
 
 const user = atom({
   key: "userState",
-  default: undefined
-})
+  default: undefined,
+});
 
-export { listData, route, user };
+const friends = atom({
+  key: "friendsState",
+  default: [],
+});
+
+const currentFriend = atom({
+  key: "currentFriendState",
+  default: undefined,
+});
+
+export { listData, route, user, friends, currentFriend };

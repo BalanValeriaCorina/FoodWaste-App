@@ -22,9 +22,8 @@ app.get("/create", async (req, res) => {
   //defining the mane to many relationship betweeen the User and the Food entities
   User.belongsToMany(Food, { through: "FoodPreferences", timestamps: false });
   Food.belongsToMany(User, { through: "FoodPreferences", timestamps: false });
-  User.belongsToMany(User, {
-    as: "friend",
-    through: "Friends",
+  User.hasMany(User, {
+    as: "Friends",
     timestamps: false,
   });
   Group.belongsToMany(User, { through: "UserGroups", timestamps: false });
@@ -33,7 +32,7 @@ app.get("/create", async (req, res) => {
   Food.belongsToMany(User, { through: "Allergies", timestamps: false });
 
   try {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     res.status(201).json({ message: "created" });
   } catch (err) {
     console.warn(err);
@@ -94,6 +93,55 @@ app.post("/users", async (req, res) => {
   }
 });
 
+app.post("/friends", async (req, res) => {
+  try {
+    // Retrieve users from database
+    const user = await User.findOne({
+      order: ["id"],
+      where: { email: req.body.currentUserEmail },
+      include: [{ model: User, as: "Friends" }],
+    });
+    const friendUser = await User.findOne({
+      order: ["id"],
+      where: { email: req.body.friendEmail },
+      include: [{ model: User, as: "Friends" }],
+    });
+
+    // Check if both users have been found
+    if (!user || !friendUser) {
+      res.status(404).json({ message: "One of the users could not be found" });
+    }
+
+    // A user cannot add himself to his own friends list
+    if (user.id == friendUser.id) {
+      res
+        .status(400)
+        .json({ message: "Can't add user to their own list of friends" });
+    }
+
+    // Add user's to each other's friends
+    await user.addFriend(friendUser.id);
+    await friendUser.addFriend(user.id);
+
+    res.status(200).json({ message: "friend added" });
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "server error" });
+  }
+});
+
+// gets the list of frinds
+app.get("/friends/:id", async (req, res) => {
+  let user = await User.findByPk(req.params.id, {
+    include: [{ model: User, as: "Friends" }],
+  });
+  if (!user) {
+    res.status(404).json({ message: "User not found" });
+  } else {
+    res.status(200).json({ friends: user.Friends });
+  }
+});
+
 app.put("/users/:id", async (req, res) => {
   try {
     const user = await User.findByPk(req.params.id);
@@ -103,15 +151,32 @@ app.put("/users/:id", async (req, res) => {
       user.lastname = req.body.lastname;
       user.email = req.body.email;
       user.userType = req.body.userType;
+      user.tag = req.body.tag;
       await user.save();
       res.status(202).json({ message: "accepted" });
     } else {
       res.status(404).json({ message: "user doesnt exist" });
     }
-    res.status(200).json(users);
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });
+  }
+});
+
+//update the invites of a user
+app.put("/invites", async (req, res) => {
+  try {
+    const user = await User.findByPk(req.body.id);
+    if (!user) {
+      res.status(404).json({ message: "User not found" });
+    } else {
+      user.invites = JSON.stringify(req.body.invites);
+      await user.save();
+      res.status(200).json({ message: "invited" });
+    }
+  } catch (err) {
+    console.warn(err);
+    res.status(500).json({ message: "internal server error" });
   }
 });
 

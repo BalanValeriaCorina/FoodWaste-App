@@ -9,18 +9,24 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
+import Friends from "./pages/Friends";
+import FriendProfile from "./pages/FriendProfile";
 
 export default function Layout() {
   const loggedInLinks = [
     {
       href: "/profile",
-      name: "Home"
+      name: "Home",
     },
     {
       href: "/",
-      name: "Logout"
-    }
-  ]
+      name: "Logout",
+    },
+    {
+      href: "/friends",
+      name: "Friends",
+    },
+  ];
 
   return (
     <Router>
@@ -59,6 +65,24 @@ export default function Layout() {
           </header>
           <main>
             <Profile></Profile>
+          </main>
+        </Route>
+
+        <Route exact path="/friends">
+          <header>
+            <Navbar links={loggedInLinks}></Navbar>
+          </header>
+          <main>
+            <Friends></Friends>
+          </main>
+        </Route>
+
+        <Route exact path="/profile/friend">
+          <header>
+            <Navbar links={loggedInLinks}></Navbar>
+          </header>
+          <main>
+            <FriendProfile></FriendProfile>
           </main>
         </Route>
       </Switch>

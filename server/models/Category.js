@@ -12,4 +12,4 @@ const Category = sequelize.define(
 
 Category.hasMany(Food, { foreignKey: "categoryId" });
 Food.belongsTo(Category, { foreignKey: "categoryId" });
-module.exports = { Category: Category };
+module.exports = { Category: Category }; //exports the object category from this file so we can use it anywhere else in the code

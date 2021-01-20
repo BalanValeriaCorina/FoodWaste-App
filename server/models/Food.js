@@ -4,7 +4,7 @@
  * @see User.js
  */
 
-const User = require("./User").User;
+const User = require("./User").User; //imports user from user.js
 const sequelize = require("../databaseManager").sequelize;
 const Sequelize = require("sequelize");
 
