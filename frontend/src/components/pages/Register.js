@@ -31,8 +31,13 @@ export default function Register() {
         .catch((err) => {
           console.error(err);
         });
+
     }); 
   }, []);
+
+        
+
+
 
   return (
     <div>
