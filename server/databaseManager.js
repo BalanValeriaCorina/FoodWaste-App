@@ -4,7 +4,7 @@ require("dotenv").config();
 const sequelize = new Sequelize(
   "FoodWaste_db",
 
-  process.env.DB.USERNAME,
+  process.env.DB_USERNAME,
   process.env.DB.PASSWORD,
 
 
