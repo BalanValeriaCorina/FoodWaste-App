@@ -25,4 +25,10 @@ const currentFriend = atom({
   default: undefined,
 });
 
-export { listData, route, user, friends, currentFriend };
+// Those are not the producs of the current user, those are the currently diplayed products
+const currentProducts = atom({
+  key: "currentProductsState",
+  default: [],
+});
+
+export { listData, route, user, friends, currentFriend, currentProducts };

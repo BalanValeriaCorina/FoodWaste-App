@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import "../../resources/styles/profile.css";
 import avatar from "../../resources/images/avatar.svg";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { user, friends } from "../../StateManager";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { user, friends, currentProducts } from "../../StateManager";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import Toast from "react-bootstrap/Toast";
@@ -12,6 +12,18 @@ export default function Profile() {
   const currentUser = useRecoilValue(user); //takes the state of a user
   const setCurrentFriends = useSetRecoilState(friends); //update friends
   const history = useHistory(); //after refreshing the state of a user is lost, and this history is taking us back home then see if
+  const [products, setProducts] = useRecoilState(currentProducts);
+
+  function getProducts() {
+    Axios.get("http://localhost:8080/products/" + currentUser.id)
+      .then((res) => {
+        console.log(res.data.products);
+        setProducts(res.data.products);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
 
   if (currentUser == undefined) {
     history.push("/");
@@ -23,6 +35,8 @@ export default function Profile() {
   }
 
   useEffect(() => {
+    getProducts();
+
     Axios.get("http://localhost:8080/friends/" + currentUser.id)
       .then((res) => {
         setCurrentFriends(res.data.friends);
@@ -51,25 +65,20 @@ export default function Profile() {
       let measurementUnit = document.getElementById("Measurementunit");
 
       Axios.post("http://localhost:8080/product", {
+        id: currentUser.id,
+        foodName: product.value,
         quantity: quantity.value,
         measurementUnit: measurementUnit.value,
       })
-
         .then((res) => {
+          getProducts();
           console.log(res);
         })
         .catch((err) => {
           console.error(err);
         });
     });
-  }, []);
-
-  const currentUser = useRecoilValue(user);
-  const history = useHistory();
-
-  if (currentUser == undefined) {
-    history.push("/");
-  }
+  }, [setProducts]);
 
   return (
     <div className="wrapper">
@@ -140,14 +149,29 @@ export default function Profile() {
           <button type="button" className="btn btn-primary" id="addbutton">
             Add
           </button>
-          <button type="button" className="btn btn-primary" id="Removebutton">
+          <button
+            type="button"
+            className="btn btn-primary ml-4"
+            id="Removebutton"
+          >
             Remove
           </button>
         </form>
       </div>
 
       <div className="list">
-        <ul></ul>
+        <ul className="w-100">
+          {products.map((prod) => {
+            return (
+              <div className="d-flex justify-content-around" key={prod}>
+                <h4>{prod.name}</h4>
+                <h5>
+                  {prod.quantity} {prod.measurementUnit}
+                </h5>
+              </div>
+            );
+          })}
+        </ul>
       </div>
     </div>
   );

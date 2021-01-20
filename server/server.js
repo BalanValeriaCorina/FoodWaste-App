@@ -32,7 +32,7 @@ app.get("/create", async (req, res) => {
   Food.belongsToMany(User, { through: "Allergies", timestamps: false });
 
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     res.status(201).json({ message: "created" });
   } catch (err) {
     console.warn(err);
@@ -435,10 +435,27 @@ app.delete("/groups/:id", async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 });
-app.get("/products", async (req, res) => {
+app.get("/products/:id", async (req, res) => {
   try {
-    const product = await Products.findAll();
-    res.status(200).json(product);
+    const productsDB = await Products.findAll({
+      where: { userId: req.params.id },
+    });
+
+    let products = [];
+
+    for (let i = 0; i < productsDB.length; i++) {
+      let prod = productsDB[i];
+      const food = await Food.findByPk(prod.foodId);
+      products.push({
+        userId: prod.userId,
+        foodId: prod.foodId,
+        quantity: prod.quantity,
+        measurementUnit: prod.measurementUnit,
+        name: food.name,
+      });
+    }
+
+    res.status(200).json({ products: products });
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });
@@ -462,7 +479,24 @@ app.get("/product/:id", async (req, res) => {
 
 app.post("/product", async (req, res) => {
   try {
-    await Products.create(req.body);
+    let foodName = req.body.foodName;
+    let userID = req.body.id;
+    let quantity = req.body.quantity;
+    let measurementUnit = req.body.measurementUnit;
+
+    // Found the user that added the product
+    let user = await User.findByPk(userID);
+    // Created the food object
+    let food = await Food.create({ name: foodName });
+
+    // Associate food with user (through product table)
+    await Products.create({
+      quantity: quantity,
+      measurementUnit: measurementUnit,
+      userId: userID,
+      foodId: food.id,
+    });
+
     res.status(201).json({ message: "product added" });
   } catch (err) {
     console.warn(err);
@@ -488,14 +522,18 @@ app.put("/product/:id", async (req, res) => {
   }
 });
 
-app.delete("/product/:id", async (req, res) => {
+app.delete("/product/:userId/:foodId", async (req, res) => {
   try {
-    const product = await Products.findByPk(req.params.id);
+    const product = await Products.findOne({
+      where: { userId: req.params.userId, foodId: req.params.foodId },
+    });
+    const food = await Food.findByPk(req.params.foodId);
     if (product) {
       await product.destroy();
+      await food.destroy();
       res.status(202).json({ message: "deleted" });
     } else {
-      res.status(404).json({ message: "product doesnt exist" });
+      res.status(404).json({ message: "product doesn't exist" });
     }
     res.status(200).json(product);
   } catch (err) {

@@ -26,18 +26,13 @@ export default function Register() {
       })
         .then((res) => {
           console.log(res);
-          history.push("/login")
+          history.push("/login");
         })
         .catch((err) => {
           console.error(err);
         });
-
-    }); 
+    });
   }, []);
-
-        
-
-
 
   return (
     <div>
@@ -83,9 +78,6 @@ export default function Register() {
           Update User
         </button>
       </form>
-      <Suspense fallback={<p>Loading...</p>}>
-        <ObjectList></ObjectList>
-      </Suspense>
     </div>
   );
 }
