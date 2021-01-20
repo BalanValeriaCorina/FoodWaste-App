@@ -16,6 +16,8 @@ const User = sequelize.define(
     lastname: Sequelize.DataTypes.STRING,
     email: Sequelize.DataTypes.STRING,
     userType: Sequelize.DataTypes.STRING,
+    tag: Sequelize.DataTypes.STRING,
+    invites: Sequelize.DataTypes.STRING,
   },
   { timestamps: false }
 );
