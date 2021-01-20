@@ -68,15 +68,11 @@ app.get("/users/:id", async (req, res) => {
 
 app.get("/users/email/:email", async (req, res) => {
   try {
-    const users = await User.findAll({order: sequelize.fn('min', sequelize.col('id'))});
-    let user = undefined;
-    users.forEach((u) => {
-      if (u.email == req.params.email) {
-        user = u;
-        return;
-      }
+    const user = await User.findOne({
+      order: ["id"],
+      where: { email: req.params.email },
     });
-    if (user == undefined) {
+    if (!user) {
       res.status(404).json({ message: "user not found" });
     } else {
       res.status(200).json(user);
