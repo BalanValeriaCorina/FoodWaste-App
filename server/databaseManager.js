@@ -5,7 +5,7 @@ const sequelize = new Sequelize(
   "FoodWaste_db",
 
   process.env.DB_USERNAME,
-  process.env.DB.PASSWORD,
+  process.env.DB_PASSWORD,
 
 
 

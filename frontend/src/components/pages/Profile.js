@@ -5,22 +5,11 @@ import { useRecoilValue } from 'recoil';
 import { user } from '../../StateManager';
 import { useHistory } from 'react-router-dom';
 import Axios from "axios";
-import Toast from 'react-bootstrap/Toast'
-import Popup from './popup';
+import Facebook from "./facebook.jpg";
+import Instagram from "./insta.jpg";
 
 
-// class Food extends React.Component{
-//   constructor(props){
-//     super(props);
-//     this.state={food:[]};
-//   }
 
-//   save(){
-//     var food=[...this.state.food];
-//     food.push(this.newproduct.value)
-//     this.setState({food});
-//   }
-// };
 
 
 
@@ -28,7 +17,7 @@ import Popup from './popup';
 export default function Profile() {
 
   
-  
+  // insert product in database
   
   useEffect(() => {
     let addbutton = document.getElementById("addbutton");
@@ -72,8 +61,21 @@ export default function Profile() {
 
 
 
+// open social media apps
+function openfb(){
+  let fbbutton=document.getElementById("facebook");
+  fbbutton.addEventListener("click", () => {
+    window.open("https://ro-ro.facebook.com/")
+  })
+  
+}
 
-
+function openinsta(){
+  let instabutton=document.getElementById("instagram");
+  instabutton.addEventListener("click", () => {
+    window.open("https://www.instagram.com/")
+  })
+}
   
   
 
@@ -97,7 +99,7 @@ export default function Profile() {
     </div>
     
 
-    
+    {/* Product form */}
     <div className="product">
     <form className="container">
         <div className="mb-3">
@@ -147,6 +149,15 @@ export default function Profile() {
         
       </ul>
     </div>
+
+    {/* Button for social media */}
+    <div className="socialmedia">
+      
+    <img onClick={openfb} id="facebook" src={Facebook} />
+    <img onClick={openinsta}id="instagram" src={Instagram} />
+    
+    </div>
+    
 
     
     </main>
