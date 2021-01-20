@@ -33,7 +33,7 @@ app.get("/create", async (req, res) => {
   Food.belongsToMany(User, { through: "Allergies", timestamps: false });
 
   try {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     res.status(201).json({ message: "created" });
   } catch (err) {
     console.warn(err);
