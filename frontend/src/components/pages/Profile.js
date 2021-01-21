@@ -5,8 +5,6 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { user, friends, currentProducts } from "../../StateManager";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
-import Toast from "react-bootstrap/Toast";
-import Popup from "./popup";
 
 export default function Profile() {
   const currentUser = useRecoilValue(user); //takes the state of a user
@@ -15,6 +13,7 @@ export default function Profile() {
   const [products, setProducts] = useRecoilState(currentProducts);
 
   function getProducts() {
+    //get products from db
     Axios.get("http://localhost:8080/products/" + currentUser.id)
       .then((res) => {
         console.log(res.data.products);
@@ -29,13 +28,13 @@ export default function Profile() {
     history.push("/");
   }
 
-  let invites = [];
+  let invites = []; //doar afisarea invitatiilor pe profil
   if (currentUser.invites) {
     invites = JSON.parse(currentUser.invites);
   }
 
   useEffect(() => {
-    getProducts();
+    getProducts(); //take prods from db at the loading stage
 
     Axios.get("http://localhost:8080/friends/" + currentUser.id)
       .then((res) => {
@@ -46,7 +45,7 @@ export default function Profile() {
         console.error(err);
       });
 
-    let addbutton = document.getElementById("addbutton");
+    let addbutton = document.getElementById("addbutton"); //Mariana's code
     addbutton.addEventListener("click", () => {
       console.log("sfe");
       var date = document.getElementById("expirationdate").value;
@@ -65,6 +64,7 @@ export default function Profile() {
       let measurementUnit = document.getElementById("Measurementunit");
 
       Axios.post("http://localhost:8080/product", {
+        //add a new product to the db
         id: currentUser.id,
         foodName: product.value,
         quantity: quantity.value,
@@ -163,7 +163,10 @@ export default function Profile() {
         <ul className="w-100">
           {products.map((prod) => {
             return (
-              <div className="d-flex justify-content-around" key={prod}>
+              <div
+                className="d-flex justify-content-around"
+                key={prod.userId + " - " + prod.foodId}
+              >
                 <h4>{prod.name}</h4>
                 <h5>
                   {prod.quantity} {prod.measurementUnit}

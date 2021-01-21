@@ -1,5 +1,4 @@
 import "./App.css";
-import Home from "./components/Home";
 import { RecoilRoot } from "recoil";
 import Layout from "./components/Layout";
 import Axios from "axios";

@@ -65,6 +65,7 @@ app.get("/users/:id", async (req, res) => {
   }
 });
 
+//get user after email from db
 app.get("/users/email/:email", async (req, res) => {
   try {
     const user = await User.findOne({
@@ -93,6 +94,7 @@ app.post("/users", async (req, res) => {
   }
 });
 
+//add a friend to a user
 app.post("/friends", async (req, res) => {
   try {
     // Retrieve users from database
@@ -435,6 +437,8 @@ app.delete("/groups/:id", async (req, res) => {
     res.status(500).json({ message: "server error" });
   }
 });
+
+//takes products from db and returns them where the request was made
 app.get("/products/:id", async (req, res) => {
   try {
     const productsDB = await Products.findAll({
@@ -478,6 +482,7 @@ app.get("/product/:id", async (req, res) => {
 });
 
 app.post("/product", async (req, res) => {
+  //inserarea unui produs nou si asocierea lui cu utilizatorul
   try {
     let foodName = req.body.foodName;
     let userID = req.body.id;
@@ -522,6 +527,7 @@ app.put("/product/:id", async (req, res) => {
   }
 });
 
+//when a user is claiming on a product the product gets deleted
 app.delete("/product/:userId/:foodId", async (req, res) => {
   try {
     const product = await Products.findOne({
@@ -535,7 +541,6 @@ app.delete("/product/:userId/:foodId", async (req, res) => {
     } else {
       res.status(404).json({ message: "product doesn't exist" });
     }
-    res.status(200).json(product);
   } catch (err) {
     console.warn(err);
     res.status(500).json({ message: "server error" });

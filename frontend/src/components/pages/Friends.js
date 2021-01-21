@@ -5,12 +5,13 @@ import { useHistory } from "react-router-dom";
 import Axios from "axios";
 
 export default function Friends() {
-  const currentUser = useRecoilValue(user);
-  const [currentFriends, setCurrentFriends] = useRecoilState(friends);
-  const setCurrentFriend = useSetRecoilState(currentFriend);
-  const history = useHistory();
+  const currentUser = useRecoilValue(user); //intoarce valoarea atomului
+  const [currentFriends, setCurrentFriends] = useRecoilState(friends); //all friends
+  const setCurrentFriend = useSetRecoilState(currentFriend); //the friedn that you select to enter the profile
+  const history = useHistory(); //e folosita doar pt navigare
 
   function getFriends() {
+    //get friends from db
     Axios.get("http://localhost:8080/friends/" + currentUser.id)
       .then((res) => {
         setCurrentFriends(res.data.friends);
@@ -22,10 +23,12 @@ export default function Friends() {
   }
 
   if (currentUser == undefined) {
+    //daca user e undefined ne va intoarce in componenta home
     history.push("/");
   }
 
   function saveTag(element, f) {
+    //saves the tags vegetarian, carnivor, <3 zacusca
     if (element.checked) {
       Axios.put(`http://localhost:8080/users/${f.id}`, {
         firstName: f.firstName,
@@ -156,65 +159,63 @@ export default function Friends() {
           Add friend
         </button>
       </form>
-      <Suspense fallback={<p>Loading...</p>}>
-        <section className="container mt-4">
-          {currentFriends.map((f) => {
-            return (
-              <div
-                className="container-fluid d-flex justify-content-between mt-3"
-                key={f.email}
-              >
-                <h4>
-                  {f.firstName} {f.lastname} ({f.email})
-                </h4>
-                <div>
-                  <input
-                    className="mr-1"
-                    id={"vegetarian-" + f.id}
-                    type="radio"
-                    name="tag"
-                    value="vegetarian"
-                  ></input>
-                  <label className="mr-2" htmlFor="vegetarian">
-                    Vegetarian
-                  </label>
-                  <input
-                    className="mr-1"
-                    id={"carnivor-" + f.id}
-                    type="radio"
-                    name="tag"
-                    value="carnivor"
-                  ></input>
-                  <label className="mr-2" htmlFor="carnivor">
-                    Carnivor
-                  </label>
-                  <input
-                    className="mr-1"
-                    id={"zacusca-" + f.id}
-                    type="radio"
-                    name="tag"
-                    value="zacusca"
-                  ></input>
-                  <label className="mr-2" htmlFor="zacusca">
-                    Iubitor zacusca
-                  </label>
-                </div>
-                <div>
-                  <button
-                    className="btn btn-success mr-1"
-                    id={"invite-button-" + f.id}
-                  >
-                    Invite to see fridge
-                  </button>
-                  <button className="btn btn-primary" id={"view-" + f.id}>
-                    View Fridge
-                  </button>
-                </div>
+      <section className="container mt-4">
+        {currentFriends.map((f) => {
+          return (
+            <div
+              className="container-fluid d-flex justify-content-between mt-3"
+              key={f.email}
+            >
+              <h4>
+                {f.firstName} {f.lastname} ({f.email})
+              </h4>
+              <div>
+                <input
+                  className="mr-1"
+                  id={"vegetarian-" + f.id}
+                  type="radio"
+                  name="tag"
+                  value="vegetarian"
+                ></input>
+                <label className="mr-2" htmlFor="vegetarian">
+                  Vegetarian
+                </label>
+                <input
+                  className="mr-1"
+                  id={"carnivor-" + f.id}
+                  type="radio"
+                  name="tag"
+                  value="carnivor"
+                ></input>
+                <label className="mr-2" htmlFor="carnivor">
+                  Carnivor
+                </label>
+                <input
+                  className="mr-1"
+                  id={"zacusca-" + f.id}
+                  type="radio"
+                  name="tag"
+                  value="zacusca"
+                ></input>
+                <label className="mr-2" htmlFor="zacusca">
+                  Iubitor zacusca
+                </label>
               </div>
-            );
-          })}
-        </section>
-      </Suspense>
+              <div>
+                <button
+                  className="btn btn-success mr-1"
+                  id={"invite-button-" + f.id}
+                >
+                  Invite to see fridge
+                </button>
+                <button className="btn btn-primary" id={"view-" + f.id}>
+                  View Fridge
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </section>
     </div>
   );
 }

@@ -2,7 +2,6 @@ import React, { Suspense, useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { listData, route, user } from "../../StateManager";
 import Jumbotron from "../reusables/Jumbotron";
-import ObjectList from "../reusables/ObjectList";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -15,15 +14,15 @@ export default function Login() {
     let email = document.getElementById("email");
     loginButton.addEventListener("click", () => {
       Axios.get("http://localhost:8080/users/email/" + email.value)
-      .then(res => {
-        setUser(res.data);
-        console.log(res.data);
-        history.push("/profile")
-      })
-      .catch(err => {
-        console.error(err);
-      });
-    })
+        .then((res) => {
+          setUser(res.data);
+          console.log(res.data);
+          history.push("/profile");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    });
   }, []);
 
   return (
@@ -36,11 +35,7 @@ export default function Login() {
           </label>
           <input type="email" className="form-control" id="email"></input>
         </div>
-        <button
-          type="button"
-          className="btn btn-primary"
-          id="login-button"
-        >
+        <button type="button" className="btn btn-primary" id="login-button">
           Login
         </button>
       </form>

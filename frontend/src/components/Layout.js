@@ -1,10 +1,6 @@
 import React, { Profiler } from "react";
 import Navbar from "./Navbar";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import User from "./pages/User";
-import Group from "./pages/Group";
-import Food from "./pages/Food";
-import Category from "./pages/Category";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";

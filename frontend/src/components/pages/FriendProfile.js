@@ -53,7 +53,10 @@ export default function FriendProfile() {
         <ul className="w-100">
           {products.map((prod) => {
             return (
-              <div className="d-flex justify-content-around" key={prod}>
+              <div
+                className="d-flex justify-content-around"
+                key={prod.userId + " - " + prod.foodId}
+              >
                 <h4>{prod.name}</h4>
                 <h5>
                   {prod.quantity} {prod.measurementUnit}
