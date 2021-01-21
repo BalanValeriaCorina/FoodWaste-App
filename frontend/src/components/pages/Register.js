@@ -1,7 +1,5 @@
 import React, { Suspense } from "react";
-import ObjectList from "../reusables/ObjectList";
-import { useSetRecoilState } from "recoil";
-import { listData, route } from "../../StateManager";
+
 import { useEffect } from "react";
 import Axios from "axios";
 import Jumbotron from "../reusables/Jumbotron";

@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { useEffect } from "react";
 import Axios from "axios";
-import ObjectList from "../reusables/ObjectList";
 import { useSetRecoilState } from "recoil";
 import { listData, route } from "../../StateManager";
 
@@ -132,10 +131,6 @@ export default function User() {
           Update User
         </button>
       </form>
-
-      <Suspense fallback={<p>Loading...</p>}>
-        <ObjectList></ObjectList>
-      </Suspense>
     </div>
   );
 }
