@@ -1,0 +1,56 @@
+#burger{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 100%;
+}
+
+.description{
+    font-size: 20px;
+    
+   
+    margin-left:2%;
+}
+
+h3{
+    float: left;
+}
+
+#chicken{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 70%;
+
+}
+
+#granola{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 70%;
+
+}
+.recipe{
+    text-align: justify;
+   
+}
+#cake{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 70%;
+}
+
+#pancakes{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 70%;
+}
+#chocolate{
+    margin-left: 50px;
+    width: 30%;
+    margin-top: 15px;
+    height: 70%;
+}
