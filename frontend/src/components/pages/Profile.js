@@ -5,6 +5,8 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { user, friends, currentProducts } from "../../StateManager";
 import { useHistory } from "react-router-dom";
 import Axios from "axios";
+import Facebook from "./facebook.jpg";
+import Instagram from "./insta.jpg";
 
 export default function Profile() {
   const currentUser = useRecoilValue(user); //takes the state of a user
@@ -32,6 +34,23 @@ export default function Profile() {
   if (currentUser.invites) {
     invites = JSON.parse(currentUser.invites);
   }
+
+  // open social media apps
+  function openfb() {
+    let fbbutton = document.getElementById("facebook");
+    fbbutton.addEventListener("click", () => {
+      window.open("https://ro-ro.facebook.com/");
+    });
+  }
+
+  function openinsta() {
+    let instabutton = document.getElementById("instagram");
+    instabutton.addEventListener("click", () => {
+      window.open("https://www.instagram.com/");
+    });
+  }
+
+  // insert product in database
 
   useEffect(() => {
     getProducts(); //take prods from db at the loading stage
@@ -108,6 +127,7 @@ export default function Profile() {
         </h2>
       </section>
 
+      {/* Product form */}
       <div className="product">
         <form className="container">
           <div className="mb-3">
@@ -119,6 +139,12 @@ export default function Profile() {
               className="form-control"
               id="productname"
             ></input>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="Quantity" className="form-label">
+              Quantity
+            </label>
+            <input type="number" className="form-control" id="quantity"></input>
           </div>
           <div className="mb-3">
             <label htmlFor="Quantity" className="form-label">
@@ -175,6 +201,12 @@ export default function Profile() {
             );
           })}
         </ul>
+      </div>
+
+      {/* Button for social media */}
+      <div className="socialmedia">
+        <img onClick={openfb} id="facebook" src={Facebook} />
+        <img onClick={openinsta} id="instagram" src={Instagram} />
       </div>
     </div>
   );
